@@ -1,49 +1,27 @@
-def find_waiting_time(n, burst_time):
-    waiting_time = [0] * n
-    service_time = [0] * n
-    service_time[0] = 0
-    
-    for i in range(1, n):
-        service_time[i] = service_time[i - 1] + burst_time[i - 1]
-        waiting_time[i] = service_time[i] - 0
-    
-    return waiting_time
-
-
-def find_turnaround_time(n, burst_time, waiting_time):
-    turnaround_time = [0] * n
-    
-    for i in range(n):
-        turnaround_time[i] = burst_time[i] + waiting_time[i]
-    
-    return turnaround_time
-
-
-def find_average_time(n, burst_time):
-    waiting_time = find_waiting_time(n, burst_time)
-    turnaround_time = find_turnaround_time(n, burst_time, waiting_time)
-    
-    total_waiting_time = sum(waiting_time)
-    total_turnaround_time = sum(turnaround_time)
-    
-    average_waiting_time = total_waiting_time / n
-    average_turnaround_time = total_turnaround_time / n
-    
-    return average_waiting_time, average_turnaround_time
-
-
-def main():
+def job_scheduling():
     n = int(input("Enter the number of jobs: "))
-    
-    burst_time = []
+    jobs = []
     for i in range(n):
-        burst_time.append(int(input(f"Enter burst time for job {i+1}: ")))
+        name = input(f"Enter the name of job {i + 1}: ")
+        deadline = int(input(f"Enter the deadline for job {i + 1}: "))
+        profit = int(input(f"Enter the profit for job {i + 1}: "))
+        jobs.append((name, deadline, profit))
     
-    avg_waiting_time, avg_turnaround_time = find_average_time(n, burst_time)
+    jobs.sort(key=lambda x: x[2], reverse=True)
     
-    print(f"Average Waiting Time: {avg_waiting_time}")
-    print(f"Average Turnaround Time: {avg_turnaround_time}")
+    schedule = [False] * (max(jobs, key=lambda x: x[1])[1] + 1)
+    total_profit = 0
+    job_sequence = []
+    
+    for job in jobs:
+        for i in range(job[1], 0, -1):
+            if not schedule[i]:
+                schedule[i] = True
+                total_profit += job[2]
+                job_sequence.append(job[0])
+                break
+    
+    print("Job sequence:", " -> ".join(job_sequence))
+    print("Total profit:", total_profit)
 
-
-if __name__ == "__main__":
-    main()
+job_scheduling()
