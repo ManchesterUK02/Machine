@@ -30,12 +30,13 @@ def main():
         for j in range(1,edges+1):
             node = int(input("Enter edge {} for node {} : ".format(j,i)))
             graph[i].append(node)
-
+    
+    source = int(input("Enter starting node: "))
     print("The following is DFS")
-    dfs(visited1, graph, 1)
+    dfs(visited1, graph, source)
     print()
     print("The following is BFS")
-    bfs(visited2, graph, 1, queue)
+    bfs(visited2, graph, source, queue)
 
 if __name__=="__main__":
     main()
