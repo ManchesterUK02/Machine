@@ -19,7 +19,7 @@ def job_scheduling():
             if not schedule[i]:
                 schedule[i] = True
                 total_profit += job[2]
-                job_sequence.append(job[0])
+                job_sequence.insert(0, job[0])
                 break
     
     print("Job sequence:", " -> ".join(job_sequence))
