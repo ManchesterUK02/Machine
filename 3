@@ -1,31 +1,40 @@
 # Job Scheduling
-def job_scheduling():
-    n = int(input("Enter the number of jobs: "))
-    jobs = []
+def printJobScheduling(arr, t):
+    n = len(arr)
     for i in range(n):
-        name = input(f"Enter the name of job {i + 1}: ")
-        deadline = int(input(f"Enter the deadline for job {i + 1}: "))
-        profit = int(input(f"Enter the profit for job {i + 1}: "))
-        jobs.append((name, deadline, profit))
-    
-    jobs.sort(key=lambda x: x[2], reverse=True)
-    
-    schedule = [False] * (max(jobs, key=lambda x: x[1])[1] + 1)
-    total_profit = 0
-    job_sequence = []
-    
-    for job in jobs:
-        for i in range(job[1], 0, -1):
-            if not schedule[i]:
-                schedule[i] = True
-                total_profit += job[2]
-                job_sequence.insert(0, job[0])
-                break
-    
-    print("Job sequence:", " -> ".join(job_sequence))
-    print("Total profit:", total_profit)
+        for j in range(n - 1 - i):
+            if arr[j][2] < arr[j + 1][2]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
 
-job_scheduling()
+    result = [False] * t
+    job = ['-1'] * t
+    total_profit = 0
+
+    for i in range(len(arr)):
+        for j in range(min(t - 1, arr[i][1] - 1), -1, -1):
+            if result[j] is False:
+                result[j] = True
+                job[j] = arr[i][0]
+                total_profit += arr[i][2]
+                break
+
+    print("Job Sequence:", job)
+    print("Total Profit:", total_profit)
+
+if __name__ == '__main__':
+    n = int(input("Enter the number of jobs: "))
+    arr = []
+    print("Enter job details:")
+    for i in range(n):
+        name = input("Enter job name: ")
+        deadline = int(input("Enter job deadline: "))
+        profit = int(input("Enter job profit: "))
+        arr.append([name, deadline, profit])
+
+    t = int(input("Enter the number of slots: "))
+    
+    print("Following is the maximum profit sequence of jobs:")
+    printJobScheduling(arr, t)
 
 # Selection Sort
 def selection_sort(arr):
